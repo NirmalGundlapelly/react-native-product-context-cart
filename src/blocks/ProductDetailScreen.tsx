@@ -222,6 +222,12 @@ export default class ProductDetailScreen extends Component<IProps, IState> {
                     </TouchableOpacity>
                   </View>
                 </View>
+                <View style={styles.detailsPriceContainer}>
+                  <Text style={styles.productDetailTitle}>Total</Text>
+                  <Text style={{color:'#9682B6', fontSize:20, fontWeight:'600'}}>
+                    ${cartList.find((each)=> each.id == details.id) ? cartList.find((each)=> each.id == details.id).quantity* details.price: this.state.quantity* details.price}
+                  </Text>
+                </View>
 
                 <View style={styles.buttonsContainer}>
                   <TouchableOpacity
@@ -336,7 +342,7 @@ const styles = StyleSheet.create({
   },
   detailsPriceContainer: {
     padding: 5,
-    width: '90%',
+    width: '95%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

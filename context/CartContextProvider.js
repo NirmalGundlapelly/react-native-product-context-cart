@@ -6,36 +6,36 @@ import { Alert, Keyboard } from 'react-native'
 export default class CartContextProvider extends Component {
     constructor(props) {
         super(props)
-        this.state = { cartList: [], itemQuantity: 1, products:[], seletedItem: {} }
+        this.state = { cartList: [], itemQuantity: 1, products: [], seletedItem: {} }
     }
 
 
 
     componentDidMount(): void {
         this.getAllProducts();
-      }
-    
-      getAllProducts = async () => {
+    }
+
+    getAllProducts = async () => {
         const response = await fetch('https://dummyjson.com/products');
         if (response.ok) {
-          const responseData = await response.json();
-          this.setState({products: responseData.products});
+            const responseData = await response.json();
+            this.setState({ products: responseData.products });
         }
-      };
+    };
 
 
-      selectedItem = (item) => {
-        this.setState({selectedItem: item})
-      }
+    selectedItem = (item) => {
+        this.setState({ selectedItem: item })
+    }
 
 
     incrementCartItemQuantity = item => {
         this.setState(prevState => ({
             cartList: prevState.cartList.map(eachCartItem => {
                 if (item.id === eachCartItem.id) {
-                    this.setState({itemQuantity:eachCartItem.quantity + 1})
+                    this.setState({ itemQuantity: eachCartItem.quantity + 1 })
                     const updatedQuantity = eachCartItem.quantity + 1
-                   
+
                     return { ...eachCartItem, quantity: updatedQuantity }
                 }
                 return eachCartItem
@@ -44,27 +44,27 @@ export default class CartContextProvider extends Component {
     }
 
     decrementCartItemQuantity = item => {
-        const {cartList} = this.state
+        const { cartList } = this.state
         const productObject = cartList.find(eachCartItem => eachCartItem.id === item.id)
         if (item.quantity > 1) {
-          this.setState(prevState => ({
-            cartList: prevState.cartList.map(eachCartItem => {
-              if (item.id === eachCartItem.id) {
-                const updatedQuantity = eachCartItem.quantity - 1
-                if (this.state.itemQuantity >1){
-                    this.setState({itemQuantity: eachCartItem.quantity - 1})
-                }
-               
-                return {...eachCartItem, quantity: updatedQuantity}
-              }
-              return eachCartItem
-            }),
-          }))
+            this.setState(prevState => ({
+                cartList: prevState.cartList.map(eachCartItem => {
+                    if (item.id === eachCartItem.id) {
+                        const updatedQuantity = eachCartItem.quantity - 1
+                        if (this.state.itemQuantity > 1) {
+                            this.setState({ itemQuantity: eachCartItem.quantity - 1 })
+                        }
+
+                        return { ...eachCartItem, quantity: updatedQuantity }
+                    }
+                    return eachCartItem
+                }),
+            }))
         } else {
-            this.setState({itemQuantity: 1})
-          this.removeCartItem(item.id)
+            this.setState({ itemQuantity: 1 })
+            this.removeCartItem(item.id)
         }
-      }
+    }
 
     handleAddToCart = (product) => {
         const { cartList } = this.state
@@ -74,9 +74,9 @@ export default class CartContextProvider extends Component {
                 cartList: prevState.cartList.map(eachCartItem => {
                     if (productObject.id === eachCartItem.id) {
                         const updatedQuantity = eachCartItem.quantity + 1
-                     
-                            this.setState({itemQuantity: updatedQuantity})
-            
+
+                        this.setState({ itemQuantity: updatedQuantity })
+
                         return { ...eachCartItem, quantity: updatedQuantity }
                     }
 
@@ -96,13 +96,13 @@ export default class CartContextProvider extends Component {
             eachCartItem => eachCartItem.id !== id,
         )
 
-        this.setState({ cartList: updatedCartList , itemQuantity:1})
+        this.setState({ cartList: updatedCartList, itemQuantity: 1 })
     }
 
     render() {
         console.log('global', this.state.itemQuantity)
         return (
-            <CartContext.Provider value={{ ...this.state,decrementCartItemQuantity:this.decrementCartItemQuantity, handleAddToCart: this.handleAddToCart, removeCartItem: this.removeCartItem, incrementCartItemQuantity:this.incrementCartItemQuantity }}>
+            <CartContext.Provider value={{ ...this.state, decrementCartItemQuantity: this.decrementCartItemQuantity, handleAddToCart: this.handleAddToCart, removeCartItem: this.removeCartItem, incrementCartItemQuantity: this.incrementCartItemQuantity }}>
                 {this.props.children}
             </CartContext.Provider>
         )

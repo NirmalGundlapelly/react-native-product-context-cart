@@ -57,7 +57,7 @@ export default class Catalog extends Component<IProps, IState> {
       <>
         <TouchableOpacity
           onPress={() =>{
-            let value = {...item, quantity: 0}
+            let value = {...item, quantity: 1}
             this.props.navigation.navigate('ProductDetailScreen', {...value})
           }
            
